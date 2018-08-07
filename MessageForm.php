@@ -12,6 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!preg_match("/^[a-zA-Z ]*$/", $fullname)) {
             $fullnameError = " leidžiamos tik raidės";
         }
+        $twoWords = explode(' ', $fullname);
+        if (!(count($twoWords) == 2)) {
+            $fullnameError = " turi būti du žodžiai";
+        }
     }
 
     if (empty($_POST["birthdate"])) {
