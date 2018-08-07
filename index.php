@@ -3,8 +3,6 @@ require 'Message.php';
 
 // Start the session
 session_start();
-$messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
-//var_dump($_SESSION);
 
 
 ?>

@@ -1,19 +1,20 @@
 <?php
+$messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
 
 // define variables and set to empty values
 $fullnameError = $emailError = $birthdateError = $messageError = "";
 $fullname = $email = $birthdate = $message = "";
+$message = new Message();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["fullname"])) {
         $fullnameError = " privalomas laukas";
     } else {
-        $fullname = test_input($_POST["fullname"]);
-        if (!preg_match("/^[a-zA-Z ]*$/", $fullname)) {
+        $message->setFullname(test_input($_POST["fullname"]));
+        if (!preg_match("/^[a-zA-Z ]*$/", $message->getFullname())) {
             $fullnameError = " leidžiamos tik raidės";
         }
-        $twoWords = explode(' ', $fullname);
-        if (!(count($twoWords) == 2)) {
+        if (!(count(explode(' ', $message->getFullname())) == 2)) {
             $fullnameError = " turi būti du žodžiai";
         }
     }
@@ -21,8 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["birthdate"])) {
         $birthdateError = "privaloma užpildyti";
     } else {
-        $birthdate = test_input($_POST["birthdate"]);
-        if (!validateDate($birthdate)) {
+        $message->setBirthday(test_input($_POST["birthdate"]));
+        if (!validateDate($message->getBirthday())) {
             $birthdateError = "netiksli data";
         }
     }
@@ -30,30 +31,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["email"])) {
         //$emailError = "Paštas privalomas";
     } else {
-        $email = test_input($_POST["email"]);
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message->setEmail(test_input($_POST["email"]));
+        if (!filter_var($message->getEmail(), FILTER_VALIDATE_EMAIL)) {
             $emailError = " blogas formatas";
         }
     }
 
 
     if (empty($_POST["message"])) {
-        $message = "";
+        $message->setMessage("");
         $messageError = " privaloma užpildyti";
     } else {
-        $message = test_input($_POST["message"]);
+        $message->setMessage(test_input($_POST["message"]));
     }
 
     if(!$fullnameError && !$emailError && !$birthdateError && !$messageError) {
-        $messageObject = new Message();
-        $messageObject
-            ->setFullname($fullname)
-            ->setBirthday($birthdate)
-            ->setEmail($email)
-            ->setMessage($message);
 
-        /** @var Message[] $messages */
-        array_unshift($messages, $messageObject);
+
+        array_unshift($messages, $message);
         $_SESSION['messages'] = $messages;
         $_POST = array();
     }
@@ -81,7 +76,7 @@ function validateDate($date, $format = 'Y-m-d')
 
         <label for="fullname">Vardas, pavardė * <?php if($fullnameError) {echo $fullnameError;}?></label><br/>
 
-        <input id="fullname" type="text" name="fullname" value="<?php echo $fullname; ?>"/>
+        <input id="fullname" type="text" name="fullname" value="<?php echo $message->getFullname(); ?>"/>
 
     </p>
 
@@ -91,7 +86,7 @@ function validateDate($date, $format = 'Y-m-d')
 
         <label for="birthdate">Gimimo data *<?php if($birthdateError) {echo $birthdateError;}?></label><br/>
 
-        <input id="birthdate" type="text" name="birthdate" value="<?php echo $birthdate; ?>"/>
+        <input id="birthdate" type="text" name="birthdate" value="<?php echo $message->getBirthday(); ?>"/>
 
     </p>
 
@@ -101,7 +96,7 @@ function validateDate($date, $format = 'Y-m-d')
 
         <label for="email">El.pašto adresas <?php if($emailError) {echo $emailError;}?></label><br/>
 
-        <input id="email" type="text" name="email" value="<?php echo $email; ?>"/>
+        <input id="email" type="text" name="email" value="<?php echo $message->getEmail(); ?>"/>
 
     </p>
 
@@ -111,7 +106,7 @@ function validateDate($date, $format = 'Y-m-d')
 
         <label for="message">Jūsų žinutė *<?php if($messageError) {echo $messageError;}?></label><br/>
 
-        <textarea name="message" rows="5" cols="30" id="message"><?php echo $message; ?></textarea>
+        <textarea name="message" rows="5" cols="30" id="message" maxlength="255"><?php echo $message->getMessage(); ?></textarea>
 
     </p>
 

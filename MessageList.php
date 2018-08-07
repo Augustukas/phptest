@@ -1,4 +1,5 @@
 <?php
+$messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
 
 /**
  * @param Message $message
