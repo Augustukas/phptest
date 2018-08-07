@@ -14,6 +14,15 @@ class Message
     }
 
     /**
+     * @return int
+     */
+    public function getMessageTime()
+    {
+        return $this->messageTime;
+    }
+
+
+    /**
      * @return mixed
      */
     public function getFullname()
@@ -84,6 +93,14 @@ class Message
     {
         $this->message = $message;
         return $this;
+    }
+
+    public function calculatePersonAge() {
+        $dateTime1 = new DateTime($this->getBirthday());
+        $dateTime2 = new DateTime();
+
+        $years = $dateTime1->diff($dateTime2);
+        return $years->y.' m.';
     }
 
     public function toArray() {
