@@ -1,3 +1,9 @@
+<?php
+require 'Message.php';
+
+// Start the session
+session_start();
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,8 +18,8 @@
 $fullnameError = $emailError = $birthdateError = $messageError = "";
 $fullname = $email = $birthdate = $message = "";
 
-$messages = [];
-
+$messages = $_SESSION['messages'] ? $_SESSION['messages'] : [];
+var_dump($_SESSION);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["fullname"])) {
         $fullnameError = " privalomas laukas";
@@ -48,6 +54,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $messageError = " privaloma užpildyti";
     } else {
         $message = test_input($_POST["message"]);
+    }
+
+    if(!$fullnameError && !$emailError && !$birthdateError && !$messageError) {
+        $messageObject = new Message();
+        $messageObject
+            ->setFullname($fullname)
+            ->setBirthday($birthdate)
+            ->setEmail($email)
+            ->setMessage($message);
+
+        /** @var Message[] $messages */
+        array_push($messages, $messageObject);
+        $_SESSION['messages'] = $messages;
     }
 }
 
@@ -116,7 +135,7 @@ function validateDate($date, $format = 'Y-m-d')
         <p>
             <span>* - privalomi laukai</span>
             <input type="submit" value="Skelbti"/>
-            <img src="img/ajax-loader.gif" alt=""/>
+            <img src="img/ajax-loader.gif" alt="loading"/>
         </p>
     </form>
 
