@@ -1,3 +1,21 @@
+<?php
+
+/**
+ * @param Message $message
+ * @return string
+ */
+function formatNameWithUrlOrNot($message) {
+
+    $url = '<a href="mailto:'.$message->getEmail() . '">'.$message->getFullname() . '</a>';
+
+    if(!$message->getEmail()) {
+        $url = $message->getFullname();
+    }
+
+    return $url;
+}
+?>
+
 <ul>
     <?php if (count($messages) == 0) {echo '<li><strong>Šiuo metu žinučių nėra. Būk pirmas!</strong></li>';}?>
 
@@ -9,11 +27,10 @@
 
                         <span>'.gmdate('Y-m-d H:i:s', $messageObject->getMessageTime()) . '</span>
                          
-                        <a href="mailto:'
-                .$messageObject->getEmail() . '">'
-                .$messageObject->getFullname() . '</a>, '
-                .$messageObject->calculatePersonAge() . '<br/>'
-                .$messageObject->getMessage() . '</li>';
+                        '.formatNameWithUrlOrNot($messageObject).', '
+                        .$messageObject->calculatePersonAge() . '<br/>'
+                        .$messageObject->getMessage() . '
+                </li>';
         }
     }
     ?>
