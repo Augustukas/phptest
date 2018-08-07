@@ -50,7 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         array_unshift($messages, $message);
         $_SESSION['messages'] = $messages;
-        $_POST = array();
+        $_POST = [];
+
+        //clean up form object
+        $message = new Message();
+        // preventing form resubmit
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
     }
 }
 
