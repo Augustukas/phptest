@@ -6,45 +6,11 @@ $fullnameError = $emailError = $birthdateError = $messageError = "";
 $message = new Message();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (empty($_POST["fullname"])) {
-        $fullnameError = " privalomas laukas";
-    } else {
-        $message->setFullname(test_input($_POST["fullname"]));
-        if (!preg_match("/^[a-zA-Z ]*$/", $message->getFullname())) {
-            $fullnameError = " leidžiamos tik raidės";
-        }
-        if (!(count(explode(' ', $message->getFullname())) == 2)) {
-            $fullnameError = " turi būti du žodžiai";
-        }
-    }
-
-    if (empty($_POST["birthdate"])) {
-        $birthdateError = "privaloma užpildyti";
-    } else {
-        $message->setBirthday(test_input($_POST["birthdate"]));
-        if (!validateDate($message->getBirthday())) {
-            $birthdateError = " netiksli, turi būti dabartyje ar Y-m-d ";
-        }
-    }
-
-    if (empty($_POST["email"])) {
-        //$emailError = "Paštas privalomas";
-    } else {
-        $message->setEmail(test_input($_POST["email"]));
-        if (!filter_var($message->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $emailError = " blogas formatas";
-        }
-    }
 
 
-    if (empty($_POST["message"])) {
-        $message->setMessage("");
-        $messageError = " privaloma užpildyti";
-    } else {
-        $message->setMessage(test_input($_POST["message"]));
-    }
-
-    if (!$fullnameError && !$emailError && !$birthdateError && !$messageError) {
+    /** @var Message $message */
+    $errors = MessageFactory::createFromPost($message, $_POST);
+    if (count($errors) === 0) {
 
         $message->saveInDb();
         //clean up form object
@@ -55,28 +21,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-function test_input($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
 
-function validateDate($date, $format = 'Y-m-d')
-{
-    $parsedDate = DateTime::createFromFormat($format, $date);
-    $currentDate = new DateTime();
-    return $currentDate > $parsedDate && $parsedDate && $parsedDate->format($format) === $date;
-}
 
 ?>
 <form method="post" ACTION="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
 
-    <p class="<?php if($fullnameError) {echo "err";}?>">
+    <p class="<?php if(isset($errors['fullnameError'])) {echo "err";}?>">
 
-        <label for="fullname">Vardas, pavardė * <?php if($fullnameError) {echo $fullnameError;}?></label><br/>
+        <label for="fullname">Vardas, pavardė * <?php if(isset($errors['fullnameError'])) {echo $errors['fullnameError'];}?></label><br/>
 
         <input id="fullname" type="text" name="fullname" value="<?php echo $message->getFullname(); ?>"/>
 
@@ -84,9 +37,9 @@ function validateDate($date, $format = 'Y-m-d')
 
 
 
-    <p class="<?php if($birthdateError) {echo "err";}?>">
+    <p class="<?php if(isset($errors['birthdateError'])) {echo "err";}?>">
 
-        <label for="birthdate">Gimimo data *<?php if($birthdateError) {echo $birthdateError;}?></label><br/>
+        <label for="birthdate">Gimimo data *<?php if(isset($errors['birthdateError'])) {echo $errors['birthdateError'];}?></label><br/>
 
         <input id="birthdate" type="text" name="birthdate" value="<?php echo $message->getBirthday(); ?>"/>
 
@@ -94,9 +47,9 @@ function validateDate($date, $format = 'Y-m-d')
 
 
 
-    <p class="<?php if($emailError) {echo "err";}?>">
+    <p class="<?php if(isset($errors['emailError'])) {echo "err";}?>">
 
-        <label for="email">El.pašto adresas <?php if($emailError) {echo $emailError;}?></label><br/>
+        <label for="email">El.pašto adresas <?php if(isset($errors['emailError'])) {echo $errors['emailError'];}?></label><br/>
 
         <input id="email" type="text" name="email" value="<?php echo $message->getEmail(); ?>"/>
 
@@ -104,9 +57,9 @@ function validateDate($date, $format = 'Y-m-d')
 
 
 
-    <p class="<?php if($messageError) {echo "err";}?>">
+    <p class="<?php if(isset($errors['messageError'])) {echo "err";}?>">
 
-        <label for="message">Jūsų žinutė *<?php if($messageError) {echo $messageError;}?></label><br/>
+        <label for="message">Jūsų žinutė *<?php if(isset($errors['messageError'])) {echo $errors['messageError'];}?></label><br/>
 
         <textarea name="message" rows="5" cols="30" id="message" maxlength="255"><?php echo $message->getMessage(); ?></textarea>
 
