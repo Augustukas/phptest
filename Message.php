@@ -116,4 +116,24 @@ class Message
         return json_encode($this->toArray());
     }
 
+    public function saveInDb()
+    {
+        $instance = DbConnection::GetInstance();
+
+        /** @var mysqli $connection */
+        $connection = $instance->getConnection();
+
+        $sql = "INSERT INTO messages (fullname, birthday, email, message, messageTime)  values (?, ?, ?, ?, FROM_UNIXTIME(?))";
+        $statement = $connection->prepare($sql);
+        $statement->bind_param('sssss', $this->fullname, $this->birthday, $this->email, $this->message, $this->messageTime);
+        $execute = $statement->execute();
+
+        if ($execute === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $statement->error;
+        }
+        $statement->close();
+    }
+
 }

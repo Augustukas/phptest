@@ -52,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['messages'] = $messages;
         $_POST = [];
 
+        $message->saveInDb();
         //clean up form object
         $message = new Message();
         // preventing form resubmit
