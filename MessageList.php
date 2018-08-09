@@ -36,3 +36,5 @@ function formatNameWithUrlOrNot($message) {
     }
     ?>
 </ul>
+
+<?php include 'Pagination.php'?>
