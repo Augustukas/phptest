@@ -95,6 +95,14 @@ class Message
         return $this;
     }
 
+    /**
+     * @param int $messageTime
+     */
+    public function setMessageTime($messageTime)
+    {
+        $this->messageTime = $messageTime;
+    }
+
     public function calculatePersonAge() {
         $dateTime1 = new DateTime($this->getBirthday());
         $dateTime2 = new DateTime();
@@ -134,6 +142,9 @@ class Message
             echo "Error: " . $sql . "<br>" . $statement->error;
         }
         $statement->close();
+        return $execute;
     }
+
+
 
 }

@@ -48,9 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!$fullnameError && !$emailError && !$birthdateError && !$messageError) {
 
 
-        array_unshift($messages, $message);
-        $_SESSION['messages'] = $messages;
-        $_POST = [];
+        //array_unshift($messages, $message);
+        //$_SESSION['messages'] = $messages;
+        //$_POST = [];
 
         $message->saveInDb();
         //clean up form object

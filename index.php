@@ -1,6 +1,7 @@
 <?php
 require 'Message.php';
 require 'DbConnection.php';
+require 'MessageFactory.php';
 
 // Start the session
 session_start();

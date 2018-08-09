@@ -1,5 +1,22 @@
 <?php
-$messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
+$messages = []; //isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
+$instance = DbConnection::GetInstance();
+
+/** @var mysqli $connection */
+$connection = $instance->getConnection();
+$result = $connection->query("SELECT * FROM messagingboard.messages");
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        $message = MessageFactory::createFromDbResponse($row);
+
+        array_unshift($messages, $message);
+    }
+} else {
+    echo "0 results";
+}
+
 
 /**
  * @param Message $message
@@ -26,7 +43,7 @@ function formatNameWithUrlOrNot($message) {
         foreach ($messages as $messageObject) {
             echo '<li>
 
-                        <span>'.gmdate('Y-m-d H:i:s', $messageObject->getMessageTime()) . '</span>
+                        <span>'.$messageObject->getMessageTime(). '</span>
                          
                         '.formatNameWithUrlOrNot($messageObject).', '
                         .$messageObject->calculatePersonAge() . '<br/>'
