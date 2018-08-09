@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $message->setBirthday(test_input($_POST["birthdate"]));
         if (!validateDate($message->getBirthday())) {
-            $birthdateError = "netiksli data";
+            $birthdateError = " netiksli, turi būti dabartyje ar Y-m-d ";
         }
     }
 
@@ -70,8 +70,9 @@ function test_input($data)
 
 function validateDate($date, $format = 'Y-m-d')
 {
-    $d = DateTime::createFromFormat($format, $date);
-    return $d && $d->format($format) === $date;
+    $parsedDate = DateTime::createFromFormat($format, $date);
+    $currentDate = new DateTime();
+    return $currentDate > $parsedDate && $parsedDate && $parsedDate->format($format) === $date;
 }
 
 ?>
