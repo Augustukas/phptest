@@ -8,7 +8,8 @@
 
 class MessageFactory
 {
-    public static function createFromDbResponse($row) {
+    public static function createFromDbResponse($row)
+    {
         $message = new Message();
         $message
             ->setFullname($row['fullname'])

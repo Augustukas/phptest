@@ -28,10 +28,12 @@ class DbConnection
         if ($this->connection === false) {
             return mysqli_connect_error();
         }
+        return true;
     }
 
     // Get mysqli connection
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->connection;
     }
 }

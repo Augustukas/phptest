@@ -3,7 +3,6 @@ $messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
 
 // define variables and set to empty values
 $fullnameError = $emailError = $birthdateError = $messageError = "";
-$fullname = $email = $birthdate = $message = "";
 $message = new Message();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -45,12 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message->setMessage(test_input($_POST["message"]));
     }
 
-    if(!$fullnameError && !$emailError && !$birthdateError && !$messageError) {
-
-
-        //array_unshift($messages, $message);
-        //$_SESSION['messages'] = $messages;
-        //$_POST = [];
+    if (!$fullnameError && !$emailError && !$birthdateError && !$messageError) {
 
         $message->saveInDb();
         //clean up form object

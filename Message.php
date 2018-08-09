@@ -103,15 +103,17 @@ class Message
         $this->messageTime = $messageTime;
     }
 
-    public function calculatePersonAge() {
+    public function calculatePersonAge()
+    {
         $dateTime1 = new DateTime($this->getBirthday());
         $dateTime2 = new DateTime();
 
         $years = $dateTime1->diff($dateTime2);
-        return $years->y.' m.';
+        return $years->y . ' m.';
     }
 
-    public function toArray() {
+    public function toArray()
+    {
         return [
             'fullname' => $this->fullname,
             'birthday' => $this->birthday,
@@ -120,7 +122,8 @@ class Message
         ];
     }
 
-    public function toJson() {
+    public function toJson()
+    {
         return json_encode($this->toArray());
     }
 
@@ -144,7 +147,6 @@ class Message
         $statement->close();
         return $execute;
     }
-
 
 
 }
