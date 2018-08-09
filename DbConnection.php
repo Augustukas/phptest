@@ -8,25 +8,30 @@
 
 class DbConnection
 {
-    public static function Instance()
+    private $connection;
+    private static $instance;
+
+    public static function GetInstance()
     {
-        static $connection = null;
-        if ($connection === null) {
-            $connection = new DbConnection();
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
-        return $connection;
+
+        return self::$instance;
     }
 
     private function __construct()
     {
         $config = parse_ini_file('./private/config.ini');
-        $connection = mysqli_connect($config['servername'], $config['username'], $config['password'], $config['dbname']);
+        $this->connection = mysqli_connect($config['servername'], $config['username'], $config['password'], $config['dbname']) or die("Couldn't connect");
 
-        if ($connection === false) {
+        if ($this->connection === false) {
             return mysqli_connect_error();
         }
-        echo 'success';
-        return $connection;
     }
 
+    // Get mysqli connection
+    public function getConnection() {
+        return $this->connection;
+    }
 }
