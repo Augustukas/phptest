@@ -1,5 +1,6 @@
 <?php
-$messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
+$messages = [];
+$errors = [];
 
 // define variables and set to empty values
 $fullnameError = $emailError = $birthdateError = $messageError = "";
@@ -13,8 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (count($errors) === 0) {
 
         $message->saveInDb();
-        //clean up form object
-        $message = new Message();
         // preventing form resubmit
         header("Location: " . $_SERVER['REQUEST_URI']);
         exit();

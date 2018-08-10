@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: augustas
- * Date: 2018-08-09
- * Time: 19:17
- */
+
 
 class MessageFactory
 {

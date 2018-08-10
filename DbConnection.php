@@ -1,17 +1,11 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: augustas
- * Date: 2018-08-09
- * Time: 15:05
- */
 
 class DbConnection
 {
     private $connection;
     private static $instance;
 
-    public static function GetInstance()
+    public static function getInstance()
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -20,7 +14,7 @@ class DbConnection
         return self::$instance;
     }
 
-    private function __construct()
+    protected function __construct()
     {
         $config = parse_ini_file('./private/config.ini');
         $this->connection = mysqli_connect($config['servername'], $config['username'], $config['password'], $config['dbname']) or die("Couldn't connect");
@@ -30,6 +24,9 @@ class DbConnection
         }
         return true;
     }
+
+    private function __clone() {}
+    private function __wakeup() {}
 
     // Get mysqli connection
     public function getConnection()

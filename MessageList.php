@@ -1,6 +1,6 @@
 <?php
 $messages = [];
-$instance = DbConnection::GetInstance();
+$instance = DbConnection::getInstance();
 
 /** @var mysqli $connection */
 $connection = $instance->getConnection();
