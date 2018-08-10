@@ -170,33 +170,13 @@ class Message implements MessageInterface
             'birthday' => $this->birthday,
             'email' => $this->email,
             'message' => $this->message,
+            'messageTime' => $this->messageTime,
         ];
     }
 
     public function toJson()
     {
         return json_encode($this->toArray());
-    }
-
-    public function saveInDb()
-    {
-        $instance = DbConnection::getInstance();
-
-        /** @var mysqli $connection */
-        $connection = $instance->getConnection();
-
-        $sql = "INSERT INTO messages (fullname, birthday, email, message, messageTime)  values (?, ?, ?, ?, FROM_UNIXTIME(?))";
-        $statement = $connection->prepare($sql);
-        $statement->bind_param('sssss', $this->fullname, $this->birthday, $this->email, $this->message, $this->messageTime);
-        $execute = $statement->execute();
-
-        if ($execute === TRUE) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql . "<br>" . $statement->error;
-        }
-        $statement->close();
-        return $execute;
     }
 
     private static function cleanUpInput($data)

@@ -1,6 +1,7 @@
 <?php
 
 use MessagingBoard\Errors;
+use MessagingBoard\MessageRepository;
 
 $messages = [];
 $error = new Errors();
@@ -14,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = MessageFactory::createFromPost($_POST, $error);
     $errors = $error->getErrors();
     if (count($errors) === 0) {
-
-        $message->saveInDb();
+        $messageRepository = new MessageRepository();
+        $messageRepository->saveMessage($message);
         // preventing form resubmit
         header("Location: " . $_SERVER['REQUEST_URI']);
         exit();

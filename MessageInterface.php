@@ -3,5 +3,10 @@ namespace MessagingBoard;
 
 interface MessageInterface {
 
-    public function saveInDb();
+    function setFullname($fullname);
+    function setBirthday($birthday);
+    function setEmail($email);
+    function setMessage($message);
+    function setMessageTime($messageTime);
+
 }

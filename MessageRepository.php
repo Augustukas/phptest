@@ -5,6 +5,7 @@ namespace MessagingBoard;
 
 
 use DbConnection;
+use Message;
 use MessageFactory;
 
 class MessageRepository
@@ -40,8 +41,30 @@ class MessageRepository
         return $messages;
     }
 
+    /**
+     * @param Message $message
+     * @return boolean success
+     */
     public function saveMessage($message){
 
+        $sql = "INSERT INTO messagingboard.messages (fullname, birthday, email, message, messageTime)  values (?, ?, ?, ?, FROM_UNIXTIME(?))";
+        $statement = self::$connection->prepare($sql);
+        $msgPropertyArray = $message->toArray();
+        $statement->bind_param('sssss',
+            $msgPropertyArray['fullname'],
+            $msgPropertyArray['birthday'],
+            $msgPropertyArray['email'],
+            $msgPropertyArray['message'],
+            $msgPropertyArray['messageTime']);
+        $execute = $statement->execute();
+
+        if ($execute === TRUE) {
+            echo "Sukurta sėkmingai";
+        } else {
+            echo "Error: " . $sql . "<br>" . $statement->error;
+        }
+        $statement->close();
+        return $execute;
     }
 
     public function getLimitedMessages($limit, $page)
