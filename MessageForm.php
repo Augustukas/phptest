@@ -1,16 +1,18 @@
 <?php
-$messages = [];
-$errors = [];
 
-// define variables and set to empty values
-$fullnameError = $emailError = $birthdateError = $messageError = "";
+use MessagingBoard\Errors;
+
+$messages = [];
+$error = new Errors();
+
 $message = new Message();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     /** @var Message $message */
-    $errors = MessageFactory::createFromPost($message, $_POST);
+    $message = MessageFactory::createFromPost($_POST, $error);
+    $errors = $error->getErrors();
     if (count($errors) === 0) {
 
         $message->saveInDb();

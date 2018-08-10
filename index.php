@@ -1,8 +1,9 @@
 <?php
+require 'MessageInterface.php';
 require 'Message.php';
 require 'DbConnection.php';
 require 'MessageFactory.php';
-
+require 'Errors.php';
 // Start the session
 session_start();
 
