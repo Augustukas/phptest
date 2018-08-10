@@ -4,8 +4,8 @@ require 'Message.php';
 require 'DbConnection.php';
 require 'MessageFactory.php';
 require 'Errors.php';
-// Start the session
-session_start();
+require 'MessageRepository.php';
+require 'Paginator.class.php';
 
 
 ?>
