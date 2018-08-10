@@ -1,18 +1,15 @@
 <?php
+
+use MessagingBoard\MessageRepository;
+use MessagingBoard\Paginator;
+
 $messages = [];
 $instance = DbConnection::getInstance();
-
-/** @var mysqli $connection */
-$connection = $instance->getConnection();
-$result = $connection->query("SELECT * FROM messagingboard.messages");
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $message = MessageFactory::createFromDbResponse($row);
-
-        array_unshift($messages, $message);
-    }
-}
+$messageRepository = new MessageRepository();
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$config = parse_ini_file('./private/config.ini');
+$limit = $config['pagesize'];
+$messages = $messageRepository->getLimitedMessages($limit, $page);
 
 
 /**
@@ -55,4 +52,8 @@ function formatNameWithUrlOrNot($message)
         ?>
     </ul>
 
-<?php include 'Pagination.php' ?>
+<?php
+$paginator = new Paginator($messageRepository);
+$paginator->getData($page);
+echo $paginator->createLinks('pages');
+?>

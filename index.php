@@ -2,10 +2,10 @@
 require 'MessageInterface.php';
 require 'Message.php';
 require 'DbConnection.php';
+require 'MessageRepository.php';
 require 'MessageFactory.php';
 require 'Errors.php';
-require 'MessageRepository.php';
-require 'Paginator.class.php';
+require 'Paginator.php';
 
 
 ?>

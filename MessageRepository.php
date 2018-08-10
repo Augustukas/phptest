@@ -30,12 +30,11 @@ class MessageRepository
 
     public function getAllMesages() {
         $messages = [];
-        $result = self::$connection->query("SELECT * FROM messagingboard.messages ORDER BY  messageTime");
+        $result = self::$connection->query("SELECT * FROM messagingboard.messages ORDER BY  messageTime desc");
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $message = MessageFactory::createFromDbResponse($row);
-
-                array_unshift($messages, $message);
+                $messages[] = $message;
             }
         }
         return $messages;
@@ -48,13 +47,12 @@ class MessageRepository
     public function getLimitedMessages($limit, $page)
     {
         $messages = [];
-        $result = self::$connection->query("SELECT * FROM messagingboard.messages ORDER BY  messageTime LIMIT "
+        $result = self::$connection->query("SELECT * FROM messagingboard.messages ORDER BY  messageTime desc LIMIT "
             . ( ( $page - 1 ) * $limit ) . ", ".$limit);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $message = MessageFactory::createFromDbResponse($row);
-
-                array_unshift($messages, $message);
+                $messages[] = $message;
             }
         }
         return $messages;

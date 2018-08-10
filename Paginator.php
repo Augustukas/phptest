@@ -24,9 +24,20 @@ class Paginator
 
     }
 
+    private function validateInput(int $page)
+    {
+        $page = trim($page);
+        $page = htmlspecialchars($page);
+        $last = ceil($this->total / $this->limit);
+        if ($page <1 || $page > $last) {
+            $page = 1;
+        }
+        return $page;
+    }
+
     public function getData($page = 1)
     {
-
+        $page = self::validateInput($page);
         $this->page = $page;
 
         $results = $this->messageRepository->getLimitedMessages($this->limit, $page);
@@ -41,35 +52,28 @@ class Paginator
         return $result;
     }
 
-    public function createLinks($links, $listId)
+    public function createLinks($listId)
     {
 
         $last = ceil($this->total / $this->limit);
 
-        $start = (($this->page - $links) > 0) ? $this->page - $links : 1;
-        $end = (($this->page + $links) < $last) ? $this->page + $links : $last;
+        $start = 1;
 
         $html = '<p id="' . $listId . '">';
 
-        $html .= '<a href="?page=' . ($this->page - 1) . '">Atgal&nbsp;</a>';
+        $html .= '<a href="?page=' . ($this->page == $start ? $start : ($this->page - 1)) . '">Atgal&nbsp;</a>';
 
-        if ($start > 1) {
-            $html .= '<a href="?page=1">1</a>';
-        }
 
-        for ($i = $start; $i <= $end; $i++) {
-            if($this->page !== $i) {
+        for ($i = $start; $i <= $last; $i++) {
+            if($this->page != $i) {
                 $html .= '<a href="?page=' . $i . '">' . $i . '&nbsp;</a>';
             } else {
                 $html .= $i.'&nbsp;';
             }
         }
 
-        if ($end < $last) {
-            $html .= '<a href="?page=' . $last . '">' . $last . '</a>';
-        }
 
-        $html .= '<a href="?page=' . ($this->page + 1) . '">&nbsp;Toliau</a>';
+        $html .= '<a href="?page=' . ($last == $this->page ? $last : ($this->page + 1)) . '">&nbsp;Toliau</a>';
 
         $html .= '</p>';
 
