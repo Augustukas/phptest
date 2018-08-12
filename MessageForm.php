@@ -77,8 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <p>
         <span>* - privalomi laukai</span>
-        <input type="submit" value="Skelbti"/>
-        <img src="img/ajax-loader.gif" alt="loading"/>
+        <input id="messageSubmit" type="submit" value="Skelbti"/>
+        <img id = "loader" src="img/ajax-loader.gif" alt="loading" style="display: none;"/>
 
     </p>
 </form>

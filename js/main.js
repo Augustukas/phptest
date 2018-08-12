@@ -27,16 +27,24 @@ const formToJSON = elements => [].reduce.call(elements, (data, element) => {
 
 
 function sendToServer(data) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            document.getElementById("messageForm").innerHTML = this.responseText;
-            refreshList();
-        }
-    };
-    xhttp.open("POST", "./MessageForm.php");
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(data));
+    toggleElement("loader");
+    toggleElement("messageSubmit");
+
+    setTimeout(function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+
+                document.getElementById("messageForm").innerHTML = this.responseText;
+
+                refreshList();
+            }
+        };
+        xhttp.open("POST", "./MessageForm.php");
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(data));
+    }, 1000);
+
 
 }
 
@@ -51,5 +59,15 @@ function refreshList() {
     xhttp.open("GET", "./MessageList.php" + (page ? "?page=" + page : ''));
     xhttp.send();
 }
+
+function toggleElement(id) {
+    let x = document.getElementById(id);
+    if (x.style.display === 'none') {
+        x.style.display = 'block';
+    } else {
+        x.style.display = 'none';
+    }
+}
+
 
 
