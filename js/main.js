@@ -19,7 +19,7 @@ function init() {
 }
 
 const formToJSON = elements => [].reduce.call(elements, (data, element) => {
-
+    element.disabled = true;
     data[element.name] = element.value;
 
     return data;
