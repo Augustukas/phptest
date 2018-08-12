@@ -1,6 +1,4 @@
 <?php
-require 'MessageInterface.php';
-require 'Paginator.php';
 
 
 ?>
@@ -10,7 +8,7 @@ require 'Paginator.php';
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Žinutės</title>
     <link rel="stylesheet" media="screen" type="text/css" href="css/screen.css"/>
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
 </head>
 <body>
 

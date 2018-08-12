@@ -31,6 +31,7 @@ function sendToServer(data) {
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             document.getElementById("messageForm").innerHTML = this.responseText;
+            refreshList();
         }
     };
     xhttp.open("POST", "./MessageForm.php");
@@ -38,4 +39,17 @@ function sendToServer(data) {
     xhttp.send(JSON.stringify(data));
 
 }
+
+function refreshList() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementById("messageList").innerHTML = this.responseText;
+        }
+    };
+    var page = location.search.split('page=')[1];
+    xhttp.open("GET", "./MessageList.php" + (page ? "?page=" + page : ''));
+    xhttp.send();
+}
+
 

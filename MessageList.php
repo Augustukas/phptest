@@ -1,4 +1,10 @@
 <?php
+require_once 'MessagingBoard\Errors.php';
+require_once 'MessagingBoard\Message.php';
+require_once 'MessagingBoard\MessageRepository.php';
+require_once 'MessagingBoard\MessageFactory.php';
+require_once 'MessagingBoard\DbConnection.php';
+require_once 'MessagingBoard\Paginator.php';
 
 use MessagingBoard\DbConnection;
 use MessagingBoard\Message;
@@ -32,7 +38,7 @@ function formatNameWithUrlOrNot($message)
 
 ?>
 
-    <ul>
+    <ul id="messageList">
         <?php if (count($messages) == 0) {
             echo '<li><strong>Šiuo metu žinučių nėra. Būk pirmas!</strong></li>';
         } ?>

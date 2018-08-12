@@ -1,9 +1,9 @@
 <?php
-require 'Errors.php';
-require 'Message.php';
-require 'MessageRepository.php';
-require 'MessageFactory.php';
-require 'DbConnection.php';
+require_once 'MessagingBoard\Errors.php';
+require_once 'MessagingBoard\Message.php';
+require_once 'MessagingBoard\MessageRepository.php';
+require_once 'MessagingBoard\MessageFactory.php';
+require_once 'MessagingBoard\DbConnection.php';
 
 use MessagingBoard\Errors;
 use MessagingBoard\Message;
