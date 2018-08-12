@@ -1,13 +1,19 @@
 <?php
+require 'Errors.php';
+require 'Message.php';
+require 'MessageRepository.php';
+require 'MessageFactory.php';
+require 'DbConnection.php';
 
 use MessagingBoard\Errors;
+use MessagingBoard\Message;
 use MessagingBoard\MessageRepository;
-
+use MessagingBoard\MessageFactory;
 $messages = [];
 $error = new Errors();
 
 $message = new Message();
-
+$json = file_get_contents('php://input');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
@@ -26,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 ?>
-<form method="post" ACTION="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+<form id="messageForm" method="post" ACTION="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
 
     <p class="<?php if(isset($errors['fullnameError'])) {echo "err";}?>">
@@ -73,5 +79,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <span>* - privalomi laukai</span>
         <input type="submit" value="Skelbti"/>
         <img src="img/ajax-loader.gif" alt="loading"/>
+
     </p>
 </form>

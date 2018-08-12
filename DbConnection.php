@@ -1,5 +1,6 @@
 <?php
 
+namespace MessagingBoard;
 class DbConnection
 {
     private $connection;
@@ -25,8 +26,13 @@ class DbConnection
         return true;
     }
 
-    private function __clone() {}
-    private function __wakeup() {}
+    private function __clone()
+    {
+    }
+
+    private function __wakeup()
+    {
+    }
 
     // Get mysqli connection
     public function getConnection()

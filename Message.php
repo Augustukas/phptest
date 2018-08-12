@@ -1,7 +1,10 @@
 <?php
-use MessagingBoard\MessageInterface;
 
-class Message implements MessageInterface
+namespace MessagingBoard;
+
+use DateTime;
+
+class Message
 {
     private $fullname;
     private $birthday;

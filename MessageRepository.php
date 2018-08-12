@@ -3,11 +3,6 @@
 namespace MessagingBoard;
 
 
-
-use DbConnection;
-use Message;
-use MessageFactory;
-
 class MessageRepository
 {
     private static $connection;
@@ -17,7 +12,7 @@ class MessageRepository
     {
 
         self::$instance = DbConnection::getInstance();
-        /** @var \DbConnection $instance */
+        /** @var DbConnection $instance */
         self::$connection = self::$instance->getConnection();
 
     }

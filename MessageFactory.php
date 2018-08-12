@@ -1,5 +1,6 @@
 <?php
 
+namespace MessagingBoard;
 
 class MessageFactory
 {
@@ -22,6 +23,12 @@ class MessageFactory
      */
     public static function createFromPost($post, $error)
     {
+        if(!$post) {
+            $post = file_get_contents('php://input');
+            $post = json_decode($post);
+            $post = get_object_vars($post);
+        }
+
         return Message::createFromPost($post, $error);
     }
 

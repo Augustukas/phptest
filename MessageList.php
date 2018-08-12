@@ -1,5 +1,7 @@
 <?php
 
+use MessagingBoard\DbConnection;
+use MessagingBoard\Message;
 use MessagingBoard\MessageRepository;
 use MessagingBoard\Paginator;
 
